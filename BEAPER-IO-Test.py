@@ -1,5 +1,5 @@
 # BEAPER Nano I/O Test project
-# June 1, 2024
+# September 21, 2024
 # Example program to test digital pins and PWM function
 
 # Import machine and time functions
@@ -23,7 +23,7 @@ LED4State = 0
 
 # Tone functions
 def tone(frequency,duration=None):
-    beeperPin = PWM(Pin(17))
+    beeperPin = PWM(Pin(17), duty_u16 = 32768)
     beeperPin.freq(frequency)
     if duration is not None:
         time.sleep(duration)
@@ -84,8 +84,8 @@ while True:
     if SW5.value() == 0:
         # Fade-out LED5
         pwmLED = PWM(Pin(10), freq=1000)
-        for brightness in range(1023, 0, -16):
-            pwmLED.duty(brightness)
+        for brightness in range(65535, 0, -1024):
+            pwmLED.duty_u16(brightness)
             time.sleep_ms(10)
         pwmLED.deinit()
         LED5 = Pin(10, Pin.OUT)
